@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: PyConsole Plug-in
+Bundle-SymbolicName: net.sf.pyconsole;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: net.sf.pyconsole.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.console,
+ org.eclipse.team.cvs.ui,
+ org.eclipse.jdt.ui
+Eclipse-LazyStart: true
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

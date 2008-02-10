@@ -1,0 +1,6 @@
+Features:
+	Command History
+	More
+
+Immediate Bugs:
+	user types quit()

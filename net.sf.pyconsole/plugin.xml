@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         id="net.sf.pyconsole.pageparticipant"
+         point="org.eclipse.ui.console.consolePageParticipants">
+      <consolePageParticipant
+            class="net.sf.pyconsole.ui.PythonConsolePageParticipant"
+            id="net.sf.pyconsole.consolePageParticipant1">
+         <enablement>
+            <instanceof
+                  value="net.sf.pyconsole.PythonConsole">
+            </instanceof></enablement>
+      </consolePageParticipant>
+   </extension>
+   <extension
+         id="net.sf.pyconsole"
+         name="Python Console"
+         point="org.eclipse.ui.console.consoleFactories">
+      <consoleFactory
+            class="net.sf.pyconsole.PythonConsoleFactory"
+            icon="py.png"
+            label="Python Console">
+      </consoleFactory>
+   </extension>
+
+</plugin>
