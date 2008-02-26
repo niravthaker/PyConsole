@@ -23,5 +23,19 @@
             label="Python Console">
       </consoleFactory>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="net.sf.pyconsole.preferences.PyConsolePreferencePage"
+            id="net.sf.pyconsole.preferences.PyConsolePreferencePage"
+            name="PyConsole Preferences">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="net.sf.pyconsole.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
 
 </plugin>
