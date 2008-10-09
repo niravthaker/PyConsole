@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description url="pyconsole.sf.net/update">
+      PyConsole Update site
+   </description>
+   <feature url="features/net.sf.pyconsole.feature_1.0.0.jar" id="net.sf.pyconsole.feature" version="1.0.0"/>
+</site>
