@@ -1,5 +1,6 @@
 package net.sf.pyconsole;
 
+import net.sf.pyconsole.commandhistory.LIFOQueue;
 import junit.framework.TestCase;
 
 public class LIFOQueueTest extends TestCase {

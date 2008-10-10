@@ -6,6 +6,7 @@ package net.sf.pyconsole;
 import java.io.File;
 import java.io.IOException;
 
+import net.sf.pyconsole.commandhistory.CommandHistory;
 import net.sf.pyconsole.preferences.PreferenceConstants;
 import net.sf.pyconsole.ui.PythonConsolePage;
 
@@ -18,12 +19,13 @@ import org.eclipse.ui.console.IConsoleView;
 import org.eclipse.ui.part.IPageBookViewPage;
 
 /**
- * @author nthaker
+ * @author Nirav Thaker
  * 
  */
 public class PythonConsole extends AbstractConsole {
 
 	private Process process;
+	private CommandHistory commandHistory;
 
 	public PythonConsole(String name, String consoleType,
 			ImageDescriptor imageDescriptor, boolean autoLifecycle) {
@@ -40,20 +42,45 @@ public class PythonConsole extends AbstractConsole {
 
 	@Override
 	public IPageBookViewPage createPage(IConsoleView view) {
-		String intPath = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_INTERPRETER_PATH);
-		if(intPath == null || intPath.length() == 0) intPath = "C:\\Python25\\python.exe";
-		else intPath = intPath + File.separatorChar + "python.exe";
+		String intPath = Activator.getDefault().getPreferenceStore().getString(
+				PreferenceConstants.P_INTERPRETER_PATH);
+		int commandHistSize = Activator.getDefault().getPreferenceStore()
+				.getInt(PreferenceConstants.P_COMMANDHISTORY_SIZE);
+		setCommandHistory(CommandHistory.getInstance(commandHistSize));
+		if (intPath.length() == 0)
+			intPath = "C:\\Python25\\python.exe";
+		else
+			intPath = intPath + File.separatorChar + "python.exe";
+		try {
+			createProcess(view, intPath);
+		} catch (IOException e) {
+			return null;
+		}
+		return new PythonConsolePage(this, view);
+	}
+
+	private void createProcess(IConsoleView view, String intPath)
+			throws IOException {
 		ProcessBuilder builder = new ProcessBuilder();
 		Process process = null;
 		try {
 			builder.command(intPath, "-uid");
 			process = builder.start();
 		} catch (IOException e) {
-			ErrorDialog.openError(view.getSite().getShell(), "Python Interpreter not found", "Can't create Process: " + intPath, new Status(IStatus.ERROR,"net.sf.pyconsole","Error forking python",e));
-			e.printStackTrace();
-			return null;
+			ErrorDialog.openError(view.getSite().getShell(),
+					"Python Interpreter not found", "Can't create Process: "
+							+ intPath, new Status(IStatus.ERROR,
+							"net.sf.pyconsole", "Error forking python", e));
+			throw e;
 		}
 		setProcess(process);
-		return new PythonConsolePage(this, view);
+	}
+
+	public void setCommandHistory(CommandHistory commandHistory) {
+		this.commandHistory = commandHistory;
+	}
+
+	public CommandHistory getCommandHistory() {
+		return commandHistory;
 	}
 }
