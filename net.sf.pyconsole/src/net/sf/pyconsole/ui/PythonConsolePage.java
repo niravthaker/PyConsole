@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import net.sf.pyconsole.PythonConsole;
+import net.sf.pyconsole.PythonConsoleFactory;
 import net.sf.pyconsole.PythonShellInputReaderJob;
 import net.sf.pyconsole.StylePrinter;
 
@@ -37,7 +38,6 @@ public class PythonConsolePage extends Page {
 	private PythonShellInputReaderJob pyShellErrorReader;
 	private StylePrinter inPrinter;
 	private PythonConsoleErrPrinter errPrinter;
-
 	public PythonConsolePage(PythonConsole pythonConsole, IConsoleView view) {
 		Process process = pythonConsole.getProcess();
 		errorStream = process.getErrorStream();
@@ -128,7 +128,12 @@ public class PythonConsolePage extends Page {
 	}
 
 	private void run() {
-		pump(txtConsole.getText());
+		String text = txtConsole.getText();
+		if("quit()".equalsIgnoreCase(text)){
+			PythonConsoleFactory.closeConsole();
+			return;
+		}
+		pump(text);
 		if (pyShellInputReader.getState() != Job.RUNNING)
 			pyShellInputReader.schedule();
 		if (pyShellErrorReader.getState() != Job.RUNNING)
@@ -171,6 +176,5 @@ public class PythonConsolePage extends Page {
 
 	public void clearConsoleText() {
 		this.styledText.setText("");
-
 	}
 }
