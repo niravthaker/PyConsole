@@ -109,6 +109,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <import plugin="org.eclipse.ui.console"/>
       <import plugin="org.eclipse.team.cvs.ui"/>
       <import plugin="org.eclipse.jdt.ui"/>
+      <import plugin="org.junit"/>
    </requires>
 
    <plugin
