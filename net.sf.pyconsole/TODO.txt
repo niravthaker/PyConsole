@@ -1,6 +1,6 @@
 Features:
-	Command History
-	More
+	Command History (DONE)
+	Parse Python and Syntax highlight
 
 Immediate Bugs:
-	user types quit()
+	user types quit() (HANDLED)

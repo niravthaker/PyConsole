@@ -8,5 +8,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.console,
  org.eclipse.team.cvs.ui,
- org.eclipse.jdt.ui
+ org.eclipse.jdt.ui,
+ org.junit
 Eclipse-LazyStart: true
