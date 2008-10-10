@@ -41,5 +41,6 @@ class PythonConsolePrinter implements StylePrinter {
 			text.setTopIndex(lineCount - 1);
 		}
 		text.append(str + "\r\n");
+		text.setData("OUT");
 	}
 }

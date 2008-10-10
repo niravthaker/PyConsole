@@ -1,6 +1,3 @@
-/**
- * 
- */
 package net.sf.pyconsole.ui;
 
 import java.io.IOException;
@@ -18,7 +15,7 @@ import org.eclipse.ui.internal.console.ConsolePluginImages;
 import org.eclipse.ui.part.IPageBookViewPage;
 
 /**
- * @author nthaker
+ * @author Nirav Thaker
  * 
  */
 @SuppressWarnings("restriction")
@@ -58,8 +55,9 @@ public class PythonConsolePageParticipant implements IConsolePageParticipant {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.console.IConsolePageParticipant#init(org.eclipse.ui.part.IPageBookViewPage,
-	 *      org.eclipse.ui.console.IConsole)
+	 * @see
+	 * org.eclipse.ui.console.IConsolePageParticipant#init(org.eclipse.ui.part
+	 * .IPageBookViewPage, org.eclipse.ui.console.IConsole)
 	 */
 	@Override
 	public void init(final IPageBookViewPage page, final IConsole console) {

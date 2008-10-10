@@ -4,18 +4,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import net.sf.pyconsole.Activator;
 import net.sf.pyconsole.PythonConsole;
 import net.sf.pyconsole.PythonConsoleFactory;
 import net.sf.pyconsole.PythonShellInputReaderJob;
 import net.sf.pyconsole.StylePrinter;
+import net.sf.pyconsole.commandhistory.CommandHistory;
+import net.sf.pyconsole.preferences.PreferenceConstants;
 
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -26,10 +32,22 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.console.IConsoleView;
 import org.eclipse.ui.part.Page;
 
+/**
+ * @author Nirav Thaker
+ * 
+ */
 public class PythonConsolePage extends Page {
 
+	class ListenerImplementation implements Listener {
+		@Override
+		public void handleEvent(Event event) {
+			if (event.detail == SWT.TRAVERSE_TAB_PREVIOUS)
+				event.doit = false;
+		}
+	}
+
 	private Text txtConsole;
-	StyledText styledText;
+	private StyledText styledText;
 	private Composite parent;
 	private final InputStream errorStream;
 	private final InputStream inputStream;
@@ -38,8 +56,11 @@ public class PythonConsolePage extends Page {
 	private PythonShellInputReaderJob pyShellErrorReader;
 	private StylePrinter inPrinter;
 	private PythonConsoleErrPrinter errPrinter;
+	private final CommandHistory commandHistory;
+
 	public PythonConsolePage(PythonConsole pythonConsole, IConsoleView view) {
 		Process process = pythonConsole.getProcess();
+		commandHistory = pythonConsole.getCommandHistory();
 		errorStream = process.getErrorStream();
 		inputStream = process.getInputStream();
 		outputStream = process.getOutputStream();
@@ -59,6 +80,23 @@ public class PythonConsolePage extends Page {
 		styledText.setWordWrap(true);
 		styledText.setTopPixel(50);
 		styledText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		styledText.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				txtConsole.setFocus();
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				txtConsole.setFocus();
+			}
+		});
+		FontData fontData = PreferenceConverter.getFontData(Activator
+				.getDefault().getPreferenceStore(),
+				PreferenceConstants.P_CONSOLE_FONT);
+		Font font = new Font(styledText.getDisplay(), fontData);
+		styledText.addLineStyleListener(new PythonLineStyleListener(this));
+		styledText.setFont(font);
 		txtConsole = new Text(parent, SWT.MULTI | SWT.LEAD | SWT.BORDER);
 		txtConsole
 				.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, false));
@@ -82,54 +120,15 @@ public class PythonConsolePage extends Page {
 			}
 
 		});
-		txtConsole.addListener(SWT.Traverse, new Listener() {
-
-			@Override
-			public void handleEvent(Event event) {
-				if (event.detail == SWT.TRAVERSE_TAB_PREVIOUS)
-					event.doit = false;
-			}
-
-		});
-		txtConsole.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				switch (e.keyCode) {
-				case '\t':
-					if (e.stateMask == SWT.SHIFT) {
-						e.doit = false;
-						String text = txtConsole.getText();
-						if (text.startsWith("\t")) {
-							int indexOf = text.indexOf('\t') + 1;
-							String substring = text.substring(indexOf);
-							txtConsole.setText(substring);
-							txtConsole.setSelection(txtConsole.getText()
-									.length());
-						}
-
-					} else {
-						txtConsole.setText('\t' + txtConsole.getText());
-						txtConsole.setSelection(txtConsole.getText().length());
-						e.doit = false;
-					}
-					break;
-				case 16777296:
-				case '\r':
-				case '\n':
-					if (txtConsole.getText().length() != 0)
-						e.doit = false;
-					else
-						txtConsole.setText("\n");
-					run();
-				default:
-				}
-			}
-		});
+		txtConsole.addListener(SWT.Traverse, new ListenerImplementation());
+		txtConsole.addKeyListener(new CommandTextboxKeyAdapter(this,
+				txtConsole, commandHistory));
 	}
 
-	private void run() {
+	protected void run() {
 		String text = txtConsole.getText();
-		if("quit()".equalsIgnoreCase(text)){
+		commandHistory.add(text);
+		if ("quit()".equalsIgnoreCase(text)) {
 			PythonConsoleFactory.closeConsole();
 			return;
 		}
@@ -149,7 +148,6 @@ public class PythonConsolePage extends Page {
 				styledText.setText("");
 				return;
 			}
-
 			String prompt = ">>>";
 			if ("\r\n".equals(text)) {
 				PythonConsolePrinter.append(styledText, prompt);
@@ -176,5 +174,9 @@ public class PythonConsolePage extends Page {
 
 	public void clearConsoleText() {
 		this.styledText.setText("");
+	}
+
+	public StyledText getStyledText() {
+		return styledText;
 	}
 }
