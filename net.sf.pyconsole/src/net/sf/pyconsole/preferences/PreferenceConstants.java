@@ -1,7 +1,8 @@
 package net.sf.pyconsole.preferences;
 
 /**
- * Constant definitions for plug-in preferences
+ * @author Nirav Thaker
+ * 
  */
 public class PreferenceConstants {
 

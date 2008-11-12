@@ -1,6 +1,3 @@
-/**
- * 
- */
 package net.sf.pyconsole;
 
 import java.io.BufferedReader;
@@ -13,6 +10,10 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
+/**
+ * @author Nirav Thaker
+ * 
+ */
 public final class PythonShellInputReaderJob extends Job {
 	private final InputStream streamToRead;
 	private final StylePrinter out;

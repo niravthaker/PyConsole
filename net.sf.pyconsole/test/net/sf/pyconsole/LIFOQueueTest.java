@@ -1,8 +1,12 @@
 package net.sf.pyconsole;
 
-import net.sf.pyconsole.commandhistory.LIFOQueue;
 import junit.framework.TestCase;
+import net.sf.pyconsole.commandhistory.LIFOQueue;
 
+/**
+ * @author Nirav Thaker
+ * 
+ */
 public class LIFOQueueTest extends TestCase {
 
 	public void testNext() {

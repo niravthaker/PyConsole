@@ -10,6 +10,10 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Text;
 
+/**
+ * @author Nirav Thaker
+ * 
+ */
 class CommandTextboxKeyAdapter extends KeyAdapter {
 	private final PythonConsolePage pythonConsolePage;
 	private final CommandHistory history;
@@ -56,8 +60,7 @@ class CommandTextboxKeyAdapter extends KeyAdapter {
 				int indexOf = text.indexOf('\t') + 1;
 				String substring = text.substring(indexOf);
 				commandTextBox.setText(substring);
-				commandTextBox.setSelection(commandTextBox.getText()
-						.length());
+				commandTextBox.setSelection(commandTextBox.getText().length());
 			}
 
 		} else {

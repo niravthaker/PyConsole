@@ -47,7 +47,7 @@ public class PythonConsole extends AbstractConsole {
 		int commandHistSize = Activator.getDefault().getPreferenceStore()
 				.getInt(PreferenceConstants.P_COMMANDHISTORY_SIZE);
 		setCommandHistory(CommandHistory.getInstance(commandHistSize));
-		if (intPath.length() == 0)
+		if (intPath != null && intPath.trim().length() == 0)
 			intPath = "C:\\Python25\\python.exe";
 		else
 			intPath = intPath + File.separatorChar + "python.exe";
@@ -67,10 +67,13 @@ public class PythonConsole extends AbstractConsole {
 			builder.command(intPath, "-uid");
 			process = builder.start();
 		} catch (IOException e) {
+			String message = "Can't create Process: "
+					+ intPath
+					+ " , Please make sure the 'Python Interpreter Home' preference points to python installation directory.";
 			ErrorDialog.openError(view.getSite().getShell(),
-					"Python Interpreter not found", "Can't create Process: "
-							+ intPath, new Status(IStatus.ERROR,
-							"net.sf.pyconsole", "Error forking python", e));
+					"Python Interpreter not found", message, new Status(
+							IStatus.ERROR, "net.sf.pyconsole",
+							"Error forking python process ", e));
 			throw e;
 		}
 		setProcess(process);

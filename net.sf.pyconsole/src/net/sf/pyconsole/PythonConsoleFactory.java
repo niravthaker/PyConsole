@@ -9,7 +9,7 @@ import org.eclipse.ui.console.IConsoleFactory;
 import org.eclipse.ui.console.IConsoleManager;
 
 /**
- * @author nthaker
+ * @author Nirav Thaker
  * 
  */
 public class PythonConsoleFactory implements IConsoleFactory {

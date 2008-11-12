@@ -8,6 +8,10 @@ import net.sf.pyconsole.StylePrinter;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Display;
 
+/**
+ * @author Nirav Thaker
+ * 
+ */
 class PythonConsolePrinter implements StylePrinter {
 	protected StyledText text;
 	protected StringBuffer buffer;
