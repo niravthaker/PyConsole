@@ -3,5 +3,12 @@
    <description url="pyconsole.sf.net/update">
       PyConsole Update site
    </description>
-   <feature url="features/net.sf.pyconsole.feature_1.0.0.jar" id="net.sf.pyconsole.feature" version="1.0.0"/>
+   <feature url="features/net.sf.pyconsole.feature_0.1.0.jar" id="net.sf.pyconsole.feature" version="0.1.0">
+      <category name="PyConsole"/>
+   </feature>
+   <category-def name="PyConsole" label="Python Console">
+      <description>
+         Python console plugin
+      </description>
+   </category-def>
 </site>
