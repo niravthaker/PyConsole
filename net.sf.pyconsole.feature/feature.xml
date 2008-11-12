@@ -2,7 +2,7 @@
 <feature
       id="net.sf.pyconsole.feature"
       label="PyConsole Feature"
-      version="1.0.0"
+      version="0.1.0"
       provider-name="Nirav Thaker"
       plugin="net.sf.pyconsole">
 
@@ -116,7 +116,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
          id="net.sf.pyconsole"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.1.0"
          unpack="false"/>
 
 </feature>
