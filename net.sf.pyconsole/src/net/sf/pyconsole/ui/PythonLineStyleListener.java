@@ -62,8 +62,19 @@ public class PythonLineStyleListener implements LineStyleListener {
 	}
 
 	private boolean isWord(String lineText, String keyWord) {
-		// TODO: Identify if it's a word
-		return true;
+		int i = lineText.indexOf(keyWord);
+		if (i == -1)
+			return false;
+		char c1 = lineText.charAt(i - 1);
+		if(i + keyWord.length() >= lineText.length() && !isIdentifierChar(c1)) {
+			return true;
+		}
+		char c2 = lineText.charAt(i + keyWord.length());
+		return Character.isLetter(c1) || isIdentifierChar(c2) ? false : true;
+	}
+
+	private boolean isIdentifierChar(char c1) {
+		return Character.isLetter(c1) || Character.isDigit(c1);
 	}
 
 	public PythonConsolePage getPythonConsolePage() {
