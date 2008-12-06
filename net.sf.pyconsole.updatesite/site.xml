@@ -6,7 +6,6 @@
    <feature url="features/net.sf.pyconsole.feature_0.1.0.jar" id="net.sf.pyconsole.feature" version="0.1.0">
       <category name="PyConsole"/>
    </feature>
-   <archive path="/plugins/" url="/plugins/"/>
    <category-def name="PyConsole" label="PyConsole">
       <description>
          PyConsole
