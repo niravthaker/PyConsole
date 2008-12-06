@@ -5,12 +5,15 @@ package net.sf.pyconsole;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.sf.pyconsole.commandhistory.CommandHistory;
 import net.sf.pyconsole.preferences.PreferenceConstants;
 import net.sf.pyconsole.ui.PythonConsolePage;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -22,10 +25,23 @@ import org.eclipse.ui.part.IPageBookViewPage;
  * @author Nirav Thaker
  * 
  */
+@SuppressWarnings("serial")
 public class PythonConsole extends AbstractConsole {
 
 	private Process process;
 	private CommandHistory commandHistory;
+	private Map<String, String> pythonDefaultPathMap = new HashMap<String, String>() {
+		{
+			put(Platform.OS_WIN32, "C:\\Python25\\");
+			put(Platform.OS_LINUX, "/usr/bin/");
+		}
+	};
+	private Map<String, String> pythonInterpreterMap = new HashMap<String, String>() {
+		{
+			put(Platform.OS_WIN32, "python.exe");
+			put(Platform.OS_MACOSX, "python");
+		}
+	};
 
 	public PythonConsole(String name, String consoleType,
 			ImageDescriptor imageDescriptor, boolean autoLifecycle) {
@@ -47,16 +63,29 @@ public class PythonConsole extends AbstractConsole {
 		int commandHistSize = Activator.getDefault().getPreferenceStore()
 				.getInt(PreferenceConstants.P_COMMANDHISTORY_SIZE);
 		setCommandHistory(CommandHistory.getInstance(commandHistSize));
+		
+		String pythonInterpreter = getPythonInterpreterName();
+		
 		if (intPath != null && intPath.trim().length() == 0)
-			intPath = "C:\\Python25\\python.exe";
+			intPath = getPythonHome() + pythonInterpreter;
 		else
-			intPath = intPath + File.separatorChar + "python.exe";
+			intPath = intPath + File.separatorChar + pythonInterpreter;
 		try {
 			createProcess(view, intPath);
 		} catch (IOException e) {
 			return null;
 		}
 		return new PythonConsolePage(this, view);
+	}
+
+	private String getPythonHome() {
+		String home = pythonDefaultPathMap.get(Platform.getOS());
+		return home == null ? "" : home;
+	}
+
+	private String getPythonInterpreterName() {
+		String home = pythonInterpreterMap.get(Platform.getOS());
+		return home == null ? "python" : home;
 	}
 
 	private void createProcess(IConsoleView view, String intPath)
