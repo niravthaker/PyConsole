@@ -3,7 +3,7 @@
 <repository name='http://pyconsole.sf.net/update-site' type='org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository' version='1.0.0'>
   <properties size='2'>
     <property name='p2.compressed' value='false'/>
-    <property name='p2.timestamp' value='1228530438980'/>
+    <property name='p2.timestamp' value='1228530978921'/>
   </properties>
   <units size='8'>
     <unit id='net.sf.pyconsole.feature.feature.jar' version='0.1.0'>
