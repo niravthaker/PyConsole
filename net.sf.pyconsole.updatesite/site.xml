@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description url="pyconsole.sf.net/update">
-      PyConsole Update site
+   <description url="http://pyconsole.sf.net/update-site">
+      PyConsole update site
    </description>
    <feature url="features/net.sf.pyconsole.feature_0.1.0.jar" id="net.sf.pyconsole.feature" version="0.1.0">
       <category name="PyConsole"/>
    </feature>
-   <category-def name="PyConsole" label="Python Console">
+   <archive path="/plugins/" url="/plugins/"/>
+   <category-def name="PyConsole" label="PyConsole">
       <description>
-         Python console plugin
+         PyConsole
       </description>
    </category-def>
 </site>
